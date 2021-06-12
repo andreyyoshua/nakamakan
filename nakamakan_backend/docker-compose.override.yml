@@ -1,0 +1,15 @@
+version: "3.8"
+
+# overrides setup for dev env
+services:
+    app:
+        build: 
+            context: .
+            args:
+                GO_ENV: dev
+        volumes:  # no need for this on prod
+            - ./:/nakamakan
+        # should revert to this command once migrations are in place
+        # command: sh -c "/nakamakan/cli_tools/migrate.linux-amd64 -path /nakamakan/migrations -verbose -database \"mysql://${DB_USERNAME}:${DB_PASSWORD}@tcp(db:3306)/${DB_NAME}\" up && air"
+        # this is temporary solution, skip migration
+        entrypoint: ["air"]

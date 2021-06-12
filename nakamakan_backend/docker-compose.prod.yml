@@ -1,0 +1,12 @@
+version: "3.8"
+
+# overrides setup for dev env
+services:
+    app:
+        build: 
+            context: .
+            args:
+                GO_ENV: prod
+        # this is temporary solution, skip migration
+        # entrypoint: ["/dist/cli_tools/migrate.linux-amd64 -path /dist/migrations -verbose -database \"mysql://${DB_USERNAME}:${DB_PASSWORD}@tcp(db:3306)/${DB_NAME}\" up && /dist/nakamakan_service"]
+        entrypoint: ["/dist/nakamakan_service"]

@@ -1,0 +1,31 @@
+version: "3.8"
+
+# for prod only run this file
+services:
+    app:
+        build: 
+            context: .
+            args:
+                GO_ENV: prod
+        depends_on: 
+            - db
+        ports:
+            - 80:80
+            - 443:443
+
+    db:
+        image: mysql:8.0
+        volumes:
+            - nakamakan-db:/var/lib/mysql
+        environment: 
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+        ports:
+            - 3306:${DB_PORT}
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 5s
+            retries: 10
+
+volumes:
+    nakamakan-db:
